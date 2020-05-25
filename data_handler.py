@@ -1,25 +1,20 @@
 import csv
 
-
-def get_questions_by_id(id):
+def get_questions():
     question_list = []
     with open("question.csv", "r") as file:
-        reader = csv.reader(file)
+        reader = csv.DictReader(file)
         for row in reader:
-            if id == row[0]:
-                question_list.append(row)
+            question_list.append(row)
     return question_list
 
-
-def get_answer_by_id(id):
-    question_list = []
-    with open("question.csv", "r") as file:
-        reader = csv.reader(file)
+def get_answers():
+    answer_list = []
+    with open("answer.csv", "r") as file:
+        reader = csv.DictReader(file)
         for row in reader:
-            if id == row[0]:
-                question_list.append(row)
-    return question_list
-
+            answer_list.append(row)
+    return answer_list
 
 def get_all_question():
     try:
