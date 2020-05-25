@@ -23,7 +23,7 @@ def get_answer_by_id(id):
 
 def get_all_question():
     try:
-        with open('question.csv') as csv_file:
+        with open('/home/veslorandpc/Desktop/projects/Ask_mate_1/question.csv') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             return [item for item in csv_reader]
     except FileNotFoundError:
