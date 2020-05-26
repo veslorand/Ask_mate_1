@@ -6,11 +6,16 @@
 </head>
 <body>
     <h1>Add new question</h1>
-    <form>
-        <textarea id="add-question" name="add" rows="8" cols="50"></textarea><br>
+    <form method="post" >
+
+        <label for="new_question_title">Title:</label><br>
+        <input type="text" name="new_question_title" id="new_question_title"><br>
+
+        <label for="new_question">Type your question here:</label><br>
+        <textarea id="new_question_message" name="new_question_message" rows="8" cols="50"></textarea><br>
+
         <button type="submit">Add new question</button>
     </form>
-
     <a href="/">Back to main</a>
 </body>
 </html>

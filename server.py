@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
-import data_handler
+from flask import Flask, render_template, request, redirect
+
 import connection
+import data_handler
 
 app = Flask(__name__)
 
@@ -12,14 +13,14 @@ def list_questions():
     sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
     return render_template("list.html", all_question=sorted_questions_by_date, header=data_handler.DATA_HEADER)
 
-@app.route('/add_question', methods=['post'])
+
+@app.route('/add_question', methods=['post', 'get'])
 def add_question():
-    my_list = []
+    #id,submission_time,view_number,vote_number,title,message,image
     if request.method == 'POST':
-        new_question = request.form
-        for value in new_question.values():
-            my_list.append(value)
-        connection.write_csv_file(data_handler.QUESTION_FILE, my_list)
+        new_question_data = data_handler.create_question_form(request.form.values())
+        connection.append_csv_file(data_handler.QUESTION_FILE, new_question_data, data_handler.QUESTION_HEADER)
+        return redirect("/")
     return render_template("add_question.html", header=data_handler.DATA_HEADER)
 
 
@@ -29,11 +30,6 @@ def question(question_id):
     all_answer = data_handler.get_all_answer()
     sorted_answer_by_vote = sorted(all_answer, key=lambda i: i['vote_number'])
     return render_template("question.html", question=line, header=data_handler.QUESTION_HEADER, all_answer=sorted_answer_by_vote)
-
-
-# @app.route("/question/add_question")
-# def add_question():
-#     return render_template("add_question.html")
 
 
 if __name__ == "__main__":
