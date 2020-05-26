@@ -5,7 +5,7 @@ import connection
 DATA_FOLDER_PATH = os.getenv('DATA_FOLDER_PATH') if 'DATA_FOLDER_PATH' in os.environ else './'
 QUESTION_FILE = DATA_FOLDER_PATH + "question.csv"
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
+QUESTION_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 def get_questions_by_id(id, file_name):
     question = connection.read_csv_file(file_name)

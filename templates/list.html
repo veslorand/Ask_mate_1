@@ -18,15 +18,21 @@
         <tbody>
             {% for item in all_question %}
                 <tr>
-                    {% for i in item.values() %}
-                        <td>
-                            {{ i }}
-                        </td>
+                    {% for i in item.items() %}
+                        {% if i[0] != "title" %}
+                            <td>
+                                {{ i[1] }}
+                            </td>
+                        {% else %}
+                            <td>
+                                <a href="/question/{{ item['id'] }}">{{ item['title'] }}</a>
+                            </td>
+                        {% endif %}
                     {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="">New question</a>
+    <a href="/question/add_question">New question</a>
 </body>
 {% endblock %}

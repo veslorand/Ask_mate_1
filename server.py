@@ -23,5 +23,16 @@ def add_question():
     return render_template("add_question", header=data_handler.DATA_HEADER)
 
 
+@app.route("/question/<question_id>")
+def question(question_id):
+    line = data_handler.get_questions_by_id(question_id, )
+    return render_template("question.html")
+
+
+@app.route("/question/add_question")
+def add_question():
+    return render_template("add_question.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
