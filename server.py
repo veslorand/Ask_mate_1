@@ -16,22 +16,24 @@ def list_questions():
 def add_question():
     my_list = []
     if request.method == 'POST':
-        question = request.form
-        for value in question.values():
+        new_question = request.form
+        for value in new_question.values():
             my_list.append(value)
-        connection.write_csv_file(question.csv, my_list)
+        connection.write_csv_file(data_handler.QUESTION_FILE, my_list)
     return render_template("add_question", header=data_handler.DATA_HEADER)
 
 
 @app.route("/question/<question_id>")
 def question(question_id):
-    line = data_handler.get_questions_by_id(question_id, )
-    return render_template("question.html")
+    line = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
+    all_answer = data_handler.get_all_answer()
+    sorted_answer_by_vote = sorted(all_answer, key=lambda i: i['vote_number'])
+    return render_template("question.html", question=line, header=data_handler.QUESTION_HEADER, all_answer=sorted_answer_by_vote)
 
 
-@app.route("/question/add_question")
-def add_question():
-    return render_template("add_question.html")
+# @app.route("/question/add_question")
+# def add_question():
+#     return render_template("add_question.html")
 
 
 if __name__ == "__main__":

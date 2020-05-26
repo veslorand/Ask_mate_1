@@ -1,17 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Question list</title>
 </head>
-<body>
-    {% for i in question %}
-        {{ i }}
-    {% endfor %}
 
-    {% for y in answer %}
-        {{ i }}
-        2
-    {% endfor %}
+{% block content %}
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for i in header %}
+                    <th>{{ i }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in all_answer %}
+                <tr>
+                    {% for i in item.items() %}
+                        {% if i[0] != "title" %}
+                            <td>
+                                {{ i[1] }}
+                            </td>
+                        {% else %}
+                            <td>
+                                <a href="/question/{{ item['id'] }}">{{ item['title'] }}</a>
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/question/add_question">New question</a>
 </body>
-</html>
+{% endblock %}
