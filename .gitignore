@@ -173,3 +173,10 @@ fabric.properties
 **/.DS_Store
 node_modules
 ./data.csv
+.idea/.gitignore
+.idea/.name
+.idea/Ask_mate_1.iml
+.idea/Ask_mate_11.iml
+.idea/inspectionProfiles/
+.idea/modules.xml
+.idea/vcs.xml
