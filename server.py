@@ -20,7 +20,7 @@ def add_question():
         for value in new_question.values():
             my_list.append(value)
         connection.write_csv_file(data_handler.QUESTION_FILE, my_list)
-    return render_template("add_question", header=data_handler.DATA_HEADER)
+    return render_template("add_question.html", header=data_handler.DATA_HEADER)
 
 
 @app.route("/question/<question_id>")
