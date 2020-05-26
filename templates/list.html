@@ -6,10 +6,28 @@
 </head>
 <body>
 
-    {{ all_question }}
-{#    {% for i in all_question %}#}
-{#        {{ i }}#}
-{#        2#}
-{#    {% endfor %}#}
+    <table border="1">
+        <thead>
+            <tr>
+                {% for i in header %}
+                    <th>{{ i }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in all_question %}
+                <tr>
+                    {% for i in item.values() %}
+                        <td>
+                            {{ i }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
 </body>
 </html>
