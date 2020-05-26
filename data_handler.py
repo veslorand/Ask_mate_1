@@ -7,8 +7,8 @@ import connection
 DATA_FOLDER_PATH = os.getenv('DATA_FOLDER_PATH') if 'DATA_FOLDER_PATH' in os.environ else './'
 QUESTION_FILE = DATA_FOLDER_PATH + "question.csv"
 ANSWER_FILE = DATA_FOLDER_PATH + "answer.csv"
-DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-QUESTION_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+QUESTIONS_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 def get_questions_by_id(id, file_name):
@@ -50,9 +50,17 @@ def get_date_time():
     return str(time)
 
 
-def create_question_form(generator):
+def create_question_form(generator):    # 'id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image'
     my_list = [get_random_id(), get_date_time(), '0', '0', '']
     title_and_message = [i for i in generator]
     for ins in title_and_message[::-1]:
+        my_list.insert(4, ins)
+    return my_list
+
+
+def create_answer_form(generator, question_id):  # 'id', 'submission_time', 'vote_number', 'question_id', 'message', 'image'
+    my_list = [get_random_id(), get_date_time(),'0', question_id, '']
+    title_and_message = [i for i in generator]
+    for ins in title_and_message:
         my_list.insert(4, ins)
     return my_list
