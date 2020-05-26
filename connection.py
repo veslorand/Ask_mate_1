@@ -15,7 +15,7 @@ def read_csv_file(file_name):
 
 
 def write_csv_file(file_name, add_new):
-    with open(file_name, "w") as file:
+    with open(file_name, "a", newline="") as file:
         for row in add_new:
             new_item = "".join(row)
             file.write(new_item)
