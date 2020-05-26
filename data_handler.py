@@ -28,6 +28,3 @@ def find_answer_by_id(id, file_name):
         if id in dic:
             return dic
 
-# print(get_answers())
-
-# print(get_all_question())
