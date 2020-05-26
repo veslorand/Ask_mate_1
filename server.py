@@ -6,16 +6,10 @@ app = Flask(__name__)
 
 @app.route("/")
 @app.route("/list")
-@app.route("/question")
 def list_questions():
     all_question = data_handler.get_all_question()
-    return render_template("list.html", all_question=all_question, header=data_handler.DATA_HEADER)
-
-
-def find_question():
-    question = data_handler.find_question_by_id(1)
-    answer = data_handler.find_answer_by_id(1)
-    return render_template("question.html", question=question, answer=answer)
+    sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
+    return render_template("list.html", all_question=sorted_questions_by_date, header=data_handler.DATA_HEADER)
 
 
 if __name__ == "__main__":
