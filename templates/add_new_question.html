@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add question</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Add new question</title>
+{% endblock %}
+{% block body %}
     <h1>Add new question</h1>
     <form method="post" >
 
@@ -17,5 +16,4 @@
         <button type="submit">Add new question</button>
     </form>
     <a href="/">Back to main</a>
-</body>
-</html>
+{% endblock %}

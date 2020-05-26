@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
+{% block head %}
     <title>Question list</title>
-</head>
-
-{% block content %}
-<body>
+{% endblock %}
+{% block body %}
     <table border="1">
         <thead>
             <tr>
@@ -34,5 +31,4 @@
         </tbody>
     </table>
     <a href="add_question">New question</a>
-</body>
 {% endblock %}
