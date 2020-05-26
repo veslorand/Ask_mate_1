@@ -13,7 +13,7 @@ def read_csv_file(file_name):
         return []
 
 
-def append_csv_file(file_name, new_question, header):
+def append_csv_file(file_name, new_question):
     with open(file_name, "a") as file:
         writer = csv.writer(file)
         writer.writerow(new_question)
