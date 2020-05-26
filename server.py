@@ -12,7 +12,7 @@ def list_questions():
     sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
     return render_template("list.html", all_question=sorted_questions_by_date, header=data_handler.DATA_HEADER)
 
-@app.route('/add_question')
+@app.route('/add_question', methots=['post'])
 def add_question():
     my_list = []
     if request.method == 'POST':
