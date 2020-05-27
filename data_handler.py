@@ -9,14 +9,13 @@ QUESTION_FILE = DATA_FOLDER_PATH + "question.csv"
 ANSWER_FILE = DATA_FOLDER_PATH + "answer.csv"
 QUESTIONS_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+ALLOWED_EXTENSIONS = {'png', 'jpg'}
 
 
 def get_questions_by_id(id, file_name):
     question = connection.read_csv_file(file_name)
     for dictionary in question:
-        print(dictionary)
         if id == dictionary['id']:
-            print(dictionary)
             return dictionary
 
 
@@ -54,18 +53,22 @@ def get_date_time():
 
 def create_question_form(
         generator):  # 'id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image'
-    my_list = [get_random_id(), get_date_time(), '0', '0', '']
+    my_list = [get_random_id(), get_date_time(), '0', '0']
     title_and_message = [i for i in generator]
     for ins in title_and_message[::-1]:
         my_list.insert(4, ins)
+    if len(my_list) == 5:
+        my_list.append("No image")
     return my_list
 
 
 def create_answer_form(generator, question_id):  # 'id', 'submission_time', 'vote_number', 'question_id', 'message', 'image'
-    my_list = [get_random_id(), get_date_time(), '0', question_id, '']
+    my_list = [get_random_id(), get_date_time(), '0', question_id]
     title_and_message = [i for i in generator]
     for ins in title_and_message:
         my_list.insert(4, ins)
+    if len(my_list) == 5:
+        my_list.append("No image")
     return my_list
 
 
@@ -76,30 +79,29 @@ def edit_question(generator, question_id):
             question_by_id['title'] = dictionary[1]
         elif dictionary[0] == "edited_question_message":
             question_by_id['message'] = dictionary[1]
-    print(question_by_id)
     return question_by_id
 
 
-def vote_up_question(question_id, file_name):
+def vote_up(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
-    for item in question_dict:
+    for item in question_dict.items:
         if item[0] == "vote_number":
             to_up = item[1]
             to_up = int(to_up)
             to_up += 1
-            item[1] = to_up
     return question_dict
 
 
-def vote_down_question(question_id, file_name):
+def vote_down(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
-    for item in question_dict:
+    for item in question_dict.items():
         if item[0] == "vote_number":
-            to_down = item[1]
-            to_down = int(to_down)
-            to_down -= 1
-            item[1] = to_down
+            to_up = item[1]
+            to_up = int(to_up)
+            to_up -= 1
     return question_dict
 
 
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

@@ -10,9 +10,11 @@
                 {% for i in header %}
                     {% if not loop.first %}
                         <th>{{ i }}
-                            <form action="/list" method="get" name="desc" id="desc" ><a href=/list>▼</a></form>
-                        <a href="/list" id="descending" name="descending">▼</a>
-                        <a href="/list" id="ascending" name="descending">▲</a></th>
+                            <form action="/list" method="get">
+                                <button type="submit" name="111{{ i }}" id="descending">▼</button>
+                            </form>
+                            <a href="/list" id="descending" name="{{ i }}" type="submit">▼</a>
+                            <a href="/list" id="ascending" name="{{ i }}" type="submit">▲</a></th>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -23,7 +25,6 @@
                     {% for i in question_dict.items() %}
                         {% if loop.first %}
                             {{ continue }}
-
                         {% elif i[0] == "vote_number" %}
                             <td>
                                 <a href="/question/{{ question_dict['id'] }}">{{ question_dict['vote_number'] }}</a>
