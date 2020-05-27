@@ -62,6 +62,13 @@ def vote_up_question(question_id):
     connection.write_csv(data_handler.QUESTION_FILE, question_vote_up, question_id)
     return redirect('/')
 
+@app.route('/question/<question_id>/vote-down')
+def vote_down_question(question_id):
+    question_vote_down = data_handler.vote_down(question_id, data_handler.QUESTION_FILE)
+    connection.write_csv(data_handler.QUESTION_FILE, question_vote_down, question_id)
+    return redirect('/')
+
+
 
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
 def edit_question(question_id):

@@ -89,8 +89,17 @@ def vote_up(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
     for item in question_dict.items():
         if item[0] == "vote_number":
-            item[1] = int(item[1]) + 1
+            to_up = item[1]
+            to_up = int(to_up)
+            to_up += 1
     return question_dict
 
-
+def vote_down(question_id, file_name):
+    question_dict = get_questions_by_id(question_id, file_name)
+    for item in question_dict.items():
+        if item[0] == "vote_number":
+            to_up = item[1]
+            to_up = int(to_up)
+            to_up -= 1
+    return question_dict
 
