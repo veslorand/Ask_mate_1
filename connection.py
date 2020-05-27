@@ -17,3 +17,14 @@ def append_csv_file(file_name, new_question):
     with open(file_name, "a") as file:
         writer = csv.writer(file)
         writer.writerow(new_question)
+
+
+def write_csv_file(file_name, dict_list, fieldnames, id):
+    with open(file_name, "w") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for question in dict_list:
+            if question['id'] == id:
+                continue
+            else:
+                writer.writerow(question)
