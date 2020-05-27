@@ -49,6 +49,7 @@ def write_csv(file_name, to_change, fieldnames, question_id):
     with open(file_name, "w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerow(questions)
+        for dic in questions:
+            writer.writerow(dic)
 
 

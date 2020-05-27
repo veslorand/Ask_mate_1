@@ -80,22 +80,26 @@ def edit_question(generator, question_id):
     return question_by_id
 
 
-def vote_up(question_id, file_name):
+def vote_up_question(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
-    for item in question_dict.items:
+    for item in question_dict:
         if item[0] == "vote_number":
             to_up = item[1]
             to_up = int(to_up)
             to_up += 1
+            item[1] = to_up
     return question_dict
 
 
-def vote_down(question_id, file_name):
+def vote_down_question(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
-    for item in question_dict.items():
+    for item in question_dict:
         if item[0] == "vote_number":
-            to_up = item[1]
-            to_up = int(to_up)
-            to_up -= 1
+            to_down = item[1]
+            to_down = int(to_down)
+            to_down -= 1
+            item[1] = to_down
     return question_dict
+
+
 
