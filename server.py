@@ -12,8 +12,6 @@ def list_questions():
     all_question = data_handler.get_all_question()
     sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
     k = [i for i in request.values.values()]
-    for i in k:
-        print(i)
     return render_template("question_list.html", all_question=sorted_questions_by_date, header=data_handler.QUESTIONS_HEADER)
 
 

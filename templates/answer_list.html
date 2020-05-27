@@ -26,22 +26,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for answer in all_answer %}
+            {% for answer_dict in all_answer %}
                 <tr>
-                    {% if answer['question_id'] == question['id'] %}
-                        {% for i in answer.items() %}
-                            {% if i[0] != "title" %}
+                    {% if answer_dict['question_id'] == question['id'] %}
+                        {% for answer_key in answer_dict.items() %}
                                 <td>
-                                    {{ i[1] }}
+                                    {{ answer_key[1] }}
+                                    {% if answer_key[0] == 'message' %}
+                                        <a href="/answer/{{ answer_key[3] }}/delete">(del)</a>
+                                    {% endif %}
                                 </td>
-                            {% else %}
-                                <td>
-                                    <a href="/question/{{ answer['id'] }}">{{ answer['title'] }}</a>
 
-                                </td>
-                            {% endif %}
                         {% endfor %}
-{#                        <td>There is no answer for your question yet! :(</td>#}
+{# todo                       <td>There is no answer for your question yet! :(</td>#}
                     {% endif %}
                 </tr>
             {% endfor %}
