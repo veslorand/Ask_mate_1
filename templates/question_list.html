@@ -10,9 +10,8 @@
                 {% for i in header %}
                     {% if not loop.first %}
                         <th>{{ i }}
-                            <form action="/list" method="get" name="desc" id="desc" ><a href=/list>▼</a></form>
-                        <a href="/list" id="descending" name="descending">▼</a>
-                        <a href="/list" id="ascending" name="descending">▲</a></th>
+                            <form action="/list/{{ name, id }}" method="get" name="asc" id="asc" ><a href=/list>▲</a></form>
+                            <form action="/list/{{ name, id }}" method="get" name="desc" id="desc" ><a href=/list>▼</a></form>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -21,17 +20,17 @@
             {% for question_dict in all_question %}
                 <tr>
                     {% for i in question_dict.items() %}
-                        {% if loop.first %}
-                            {{ continue }}
-                        {% elif i[0] != "title" %}
-                            <td>
-                                {{ i[1] }}
-                            </td>
-                        {% else %}
-                            <td>
-                                <a href="/question/{{ question_dict['id'] }}">{{ question_dict['title'] }}</a>
-                                <a href="/question/{{ question_dict['id'] }}/delete">(del)</a>
-                            </td>
+                        {% if not loop.first %}
+                            {% if i[0] != "title" %}
+                                <td>
+                                    {{ i[1] }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <a href="/question/{{ question_dict['id'] }}">{{ question_dict['title'] }}</a>
+                                    <a href="/question/{{ question_dict['id'] }}/delete">(del)</a>
+                                </td>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </tr>

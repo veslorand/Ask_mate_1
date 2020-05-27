@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 
 import connection
 import data_handler
@@ -47,8 +47,18 @@ def add_new_answer(question_id):
 def delete_question(question_id):
     all_question = data_handler.get_all_question()
     connection.write_csv_file(data_handler.QUESTION_FILE, all_question, data_handler.QUESTIONS_HEADER, question_id)
+    return redirect("/")
+
+
+@app.route('/answer/<answer_id>/delete')
+def delete_answer(answer_id):
+    all_answer = data_handler.get_all_answer()
+    connection.write_csv_file(data_handler.ANSWER_FILE, all_answer, data_handler.ANSWERS_HEADER, answer_id)
     return redirect('/')
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host='0.0.0.0',
+        port=8000,
+        debug=True,
+    )
