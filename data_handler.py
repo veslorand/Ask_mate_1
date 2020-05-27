@@ -12,8 +12,11 @@ ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'messag
 
 
 def get_questions_by_id(id, file_name):
+    print(id)
     question = connection.read_csv_file(file_name)
+
     for dic in question:
+        print(dic)
         if id == dic['id']:
             return dic
 
@@ -50,7 +53,8 @@ def get_date_time():
     return str(time)
 
 
-def create_question_form(generator):    # 'id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image'
+def create_question_form(
+        generator):  # 'id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image'
     my_list = [get_random_id(), get_date_time(), '0', '0', '']
     title_and_message = [i for i in generator]
     for ins in title_and_message[::-1]:
@@ -59,11 +63,27 @@ def create_question_form(generator):    # 'id', 'submission_time', 'view_number'
 
 
 def create_answer_form(generator, question_id):  # 'id', 'submission_time', 'vote_number', 'question_id', 'message', 'image'
-    my_list = [get_random_id(), get_date_time(),'0', question_id, '']
+    my_list = [get_random_id(), get_date_time(), '0', question_id, '']
     title_and_message = [i for i in generator]
     for ins in title_and_message:
         my_list.insert(4, ins)
     return my_list
+
+
+def edit_question(generator, question_id):
+    question_by_id = get_questions_by_id(question_id, QUESTION_FILE)
+    print(question_by_id)
+    for dictionary in generator:
+        print(question_by_id['title'])
+        print(dictionary[0], dictionary[1])
+        question_by_id['title'] = dictionary[1]
+        if dictionary == question_id:
+            question_by_id.update(4, dictionary['title'])
+        elif dictionary[1] == 'message':
+            question_by_id.update(5, dictionary['id'])
+    print(question_by_id)
+    return question_by_id
+
 
 def vote_up(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
