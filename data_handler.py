@@ -12,13 +12,12 @@ ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'messag
 
 
 def get_questions_by_id(id, file_name):
-    print(id)
     question = connection.read_csv_file(file_name)
-
-    for dic in question:
-        print(dic)
-        if id == dic['id']:
-            return dic
+    for dictionary in question:
+        print(dictionary)
+        if id == dictionary['id']:
+            print(dictionary)
+            return dictionary
 
 
 def get_all_question():
@@ -72,15 +71,11 @@ def create_answer_form(generator, question_id):  # 'id', 'submission_time', 'vot
 
 def edit_question(generator, question_id):
     question_by_id = get_questions_by_id(question_id, QUESTION_FILE)
-    print(question_by_id)
     for dictionary in generator:
-        print(question_by_id['title'])
-        print(dictionary[0], dictionary[1])
-        question_by_id['title'] = dictionary[1]
-        if dictionary == question_id:
-            question_by_id.update(4, dictionary['title'])
-        elif dictionary[1] == 'message':
-            question_by_id.update(5, dictionary['id'])
+        if dictionary[0] == "edited_question_title":
+            question_by_id['title'] = dictionary[1]
+        elif dictionary[0] == "edited_question_message":
+            question_by_id['message'] = dictionary[1]
     print(question_by_id)
     return question_by_id
 
@@ -93,6 +88,7 @@ def vote_up(question_id, file_name):
             to_up = int(to_up)
             to_up += 1
     return question_dict
+
 
 def vote_down(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
