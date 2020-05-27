@@ -40,13 +40,14 @@ def edit_csv_file(file_name, question_id, all_question):
                 pass
 
 
-def write_csv(file_name, to_change, question_id):
+def write_csv(file_name, to_change, fieldnames, question_id):
     questions = read_csv_file(file_name)
     for dict in questions:
         if question_id in dict:
-            dict = to_change
-    with open(file_name, "w") as file:
-        writer = csv.DictWriter(file)
+            questions.remove(dict)
+            questions.append(to_change)
+    with open(file_name, "w", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerow(questions)
 

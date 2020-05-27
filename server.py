@@ -65,7 +65,7 @@ def vote_up_question(question_id):
 @app.route('/question/<question_id>/vote-down')
 def vote_down_question(question_id):
     question_vote_down = data_handler.vote_down(question_id, data_handler.QUESTION_FILE)
-    connection.write_csv(data_handler.QUESTION_FILE, question_vote_down, question_id)
+    connection.write_csv(data_handler.QUESTION_FILE, question_vote_down,data_handler.QUESTIONS_HEADER, question_id)
     return redirect('/')
 
 
