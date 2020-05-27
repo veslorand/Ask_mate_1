@@ -17,10 +17,10 @@ def list_questions():
 
 @app.route("/question/<question_id>")
 def question(question_id):
-    line = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
+    question_by_id = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
     all_answer = data_handler.get_all_answer()
     sorted_answer_by_vote = sorted(all_answer, key=lambda i: i['vote_number'])
-    return render_template("answer_list.html", question=line, header=data_handler.ANSWERS_HEADER, all_answer=sorted_answer_by_vote)
+    return render_template("answer_list.html", question=question_by_id, header=data_handler.ANSWERS_HEADER, all_answer=sorted_answer_by_vote)
 
 
 @app.route('/add_new_question', methods=['POST', 'GET'])
@@ -61,6 +61,19 @@ def vote_up_question(question_id):
     question_vote_up = data_handler.vote_up(question_id, data_handler.QUESTION_FILE)
     connection.write_csv(data_handler.QUESTION_FILE, question_vote_up, question_id)
     return redirect('/')
+
+
+@app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
+def edit_question(question_id):
+    all_question = data_handler.get_all_question()
+    # connection.write_csv_file(data_handler.QUESTION_FILE, all_question, data_handler.QUESTIONS_HEADER, question_id)
+    if request.method == 'POST':
+        edited_question_data = data_handler.edit_question(request.form.items(), question_id)
+        print(edited_question_data)
+        connection.append_csv_file(data_handler.QUESTION_FILE, edited_question_data.values())
+        return redirect("/")
+    return render_template("edit_question.html", header=data_handler.QUESTIONS_HEADER, question_id=question_id)
+
 
 if __name__ == "__main__":
     app.run(
