@@ -87,7 +87,7 @@ def edit_question(generator, question_id):
 
 def vote_up(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
-    for item in question_dict.items():
+    for item in question_dict.items:
         if item[0] == "vote_number":
             to_up = item[1]
             to_up = int(to_up)
