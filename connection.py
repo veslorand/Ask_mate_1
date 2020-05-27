@@ -28,3 +28,15 @@ def write_csv_file(file_name, dict_list, fieldnames, id):
                 continue
             else:
                 writer.writerow(dictionary)
+
+def write_csv(file_name, to_change, question_id):
+    questions = read_csv_file(file_name)
+    for dict in questions:
+        if question_id in dict:
+            dict = to_change
+    with open(file_name, "w") as file:
+        writer = csv.DictWriter(file)
+        writer.writeheader()
+        writer.writerow(questions)
+
+

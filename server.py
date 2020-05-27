@@ -56,6 +56,12 @@ def delete_answer(answer_id):
     connection.write_csv_file(data_handler.ANSWER_FILE, all_answer, data_handler.ANSWERS_HEADER, answer_id)
     return redirect('/')
 
+@app.route('/question/<question_id>/vote-up')
+def vote_up_question(question_id):
+    question_vote_up = data_handler.vote_up(question_id, data_handler.QUESTION_FILE)
+    connection.write_csv(data_handler.QUESTION_FILE, question_vote_up, question_id)
+    return redirect('/')
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',

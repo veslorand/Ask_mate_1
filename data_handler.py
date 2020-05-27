@@ -37,7 +37,7 @@ def get_all_answer():
 def find_answer_by_id(id, file_name):
     answer = connection.read_csv_file(file_name)
     for dic in answer:
-        if id in dic:
+        if id in dic['id']:
             return dic
 
 
@@ -64,3 +64,13 @@ def create_answer_form(generator, question_id):  # 'id', 'submission_time', 'vot
     for ins in title_and_message:
         my_list.insert(4, ins)
     return my_list
+
+def vote_up(question_id, file_name):
+    question_dict = get_questions_by_id(question_id, file_name)
+    for item in question_dict.items():
+        if item[0] == "vote_number":
+            item[1] = int(item[1]) + 1
+    return question_dict
+
+
+
