@@ -26,17 +26,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in all_answer %}
+            {% for answer in all_answer %}
                 <tr>
-                    {% if item['question_id'] == question['id'] %}
-                        {% for i in item.items() %}
+                    {% if answer['question_id'] == question['id'] %}
+                        {% for i in answer.items() %}
                             {% if i[0] != "title" %}
                                 <td>
                                     {{ i[1] }}
                                 </td>
                             {% else %}
                                 <td>
-                                    <a href="/question/{{ item['id'] }}">{{ item['title'] }}</a>
+                                    <a href="/question/{{ answer['id'] }}">{{ answer['title'] }}</a>
+
                                 </td>
                             {% endif %}
                         {% endfor %}
