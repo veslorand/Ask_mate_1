@@ -8,7 +8,12 @@
         <thead>
             <tr>
                 {% for i in header %}
-                    <th>{{ i }}</th>
+                    {% if not loop.first %}
+                        <th>{{ i }}
+                            <form action="/list" method="get" name="desc" id="desc" ><a href=/list>▼</a></form>
+                        <a href="/list" id="descending" name="descending">▼</a>
+                        <a href="/list" id="ascending" name="descending">▲</a></th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         </thead>
@@ -16,13 +21,16 @@
             {% for item in all_question %}
                 <tr>
                     {% for i in item.items() %}
-                        {% if i[0] != "title" %}
+                        {% if loop.first %}
+                            {{ continue }}
+                        {% elif i[0] != "title" %}
                             <td>
                                 {{ i[1] }}
                             </td>
                         {% else %}
                             <td>
                                 <a href="/question/{{ item['id'] }}">{{ item['title'] }}</a>
+                                <a href="/question/{{ item['id'] }}/delete">(del)</a>
                             </td>
                         {% endif %}
                     {% endfor %}
