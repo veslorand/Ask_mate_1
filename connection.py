@@ -54,3 +54,19 @@ def write_csv(file_name, to_change, fieldnames, question_id):
             writer.writerow(dic)
 
 
+def sort_the_questions(all_question, order_by, order_direction):
+    basic_sort = 'submission_time'
+    try:
+        if order_direction == "desc":
+            if order_by == 'view_number' or order_by == 'vote_number':
+                sorted_questions = sorted(all_question, key=lambda i: int(i[order_by]), reverse=True)
+            else:
+                sorted_questions = sorted(all_question, key=lambda i: i[order_by], reverse=True)
+        else:
+            if order_by == 'view_number' or order_by == 'vote_number':
+                sorted_questions = sorted(all_question, key=lambda i: int(i[order_by]))
+            else:
+                sorted_questions = sorted(all_question, key=lambda i: i[order_by])
+    except:
+        sorted_questions = sorted(all_question, key=lambda i: i[basic_sort])
+    return sorted_questions
