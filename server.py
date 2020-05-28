@@ -99,6 +99,17 @@ def vote_down_question(question_id):
     connection.write_csv(data_handler.QUESTION_FILE, question_vote_down, data_handler.QUESTIONS_HEADER, question_id)
     return redirect('/')
 
+@app.route('/answer/<answer_id>/vote-up')
+def vote_up_answer(answer_id):
+    answer_vote_up = data_handler.vote_up_answer(answer_id, data_handler.ANSWER_FILE)
+    connection.write_csv(data_handler.ANSWER_FILE, answer_vote_up, data_handler.ANSWERS_HEADER, answer_id)
+    return render_template("answer_list.html", header=data_handler.ANSWERS_HEADER)
+
+@app.route('/answer/<answer_id>/vote-down')
+def vote_down_answer(answer_id):
+    answer_down_up = data_handler.vote_down_answer(answer_id, data_handler.ANSWER_FILE)
+    connection.write_csv(data_handler.ANSWER_FILE, answer_down_up, data_handler.ANSWERS_HEADER, answer_id)
+    return render_template("answer_list.html", header=data_handler.ANSWERS_HEADER)
 
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
 def edit_question(question_id):

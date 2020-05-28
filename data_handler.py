@@ -19,6 +19,12 @@ def get_questions_by_id(id, file_name):
             print(dictionary)
             return dictionary
 
+def get_answer_by_id(id, file_name):
+    answer = connection.read_csv_file(file_name)
+    for dict in answer:
+        if id == dict['id']:
+            return dict
+
 
 def get_all_question():
     try:
@@ -104,5 +110,22 @@ def vote_down_question(question_id, file_name):
                 pass
     return question_dict
 
+def vote_up_answer(answer_id, file_name):
+    answer_dict = get_answer_by_id(answer_id, file_name)
+    for item in answer_dict.items():
+        if item[0] == "vote_number":
+            item = list(item)
+            item[1] = int(item[1]) + 1
+            answer_dict['vote_number'] = item[1]
+            break
+    return answer_dict
 
-
+def vote_down_answer(answer_id, file_name):
+    answer_dict = get_answer_by_id(answer_id, file_name)
+    for item in answer_dict.items():
+        if item[0] == "vote_number":
+            item = list(item)
+            item[1] = int(item[1]) - 1
+            answer_dict['vote_number'] = item[1]
+            break
+    return answer_dict

@@ -35,8 +35,8 @@
                                     {% if answer_key[0] == 'message' %}
                                         <a href="/answer/{{ answer_dict['id'] }}/delete">(del)</a>
                                     {% elif answer_key[0] == 'vote_number' %}
-                                        <a href="/answer/{{ answer_dict['id'] }}/vote_up">(▲)</a>
-                                        <a href="/answer/{{ answer_dict['id'] }}/vote_down">(▼)</a>
+                                        <a href="/answer/{{ answer_dict['id'] }}/vote-up">(▲)</a>
+                                        <a href="/answer/{{ answer_dict['id'] }}/vote-down">(▼)</a>
 
                                     {% endif %}
                                 </td>
