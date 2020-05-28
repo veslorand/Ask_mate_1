@@ -9,13 +9,11 @@ import os
 app = Flask(__name__)
 UPLOAD_FOLDER = '/home/veslorandpc/Desktop/projects/Ask_mate_1/static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-LAST_ROUTE = None
 
 
 @app.route("/")
 @app.route("/list")
 def list_questions():
-    # print(request.environ['HTTP_REFERER'], request.environ['HTTP_HOST'] + "/")
     all_question = data_handler.get_all_question()
     sorted_questions = connection.sort_the_questions(all_question, request.args.get('order_by'),
                                                      request.args.get('order_direction'))
@@ -27,7 +25,7 @@ def list_questions():
 def question(question_id):
     question_by_id = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
     all_answer = data_handler.get_all_answer()
-    sorted_answer_by_vote = sorted(all_answer, key=lambda i: i['vote_number'])
+    sorted_answer_by_vote = sorted(all_answer, key=lambda i: i['vote_number'], reverse=True)
     return render_template("answer_list.html", question=question_by_id, header=data_handler.ANSWERS_HEADER,
                            all_answer=sorted_answer_by_vote)
 
@@ -75,7 +73,7 @@ def delete_question(question_id):
 def delete_answer(answer_id):
     all_answer = data_handler.get_all_answer()
     connection.write_csv_file(data_handler.ANSWER_FILE, all_answer, data_handler.ANSWERS_HEADER, answer_id)
-    return redirect('/')
+    return redirect('/')#f'/question/{all_answer["question_id"]}')
 
 
 @app.route('/question/<question_id>/vote-up')
@@ -96,14 +94,14 @@ def vote_down_question(question_id):
 def vote_up_answer(answer_id):
     answer_vote_up = data_handler.vote_up_answer(answer_id, data_handler.ANSWER_FILE)
     connection.write_csv(data_handler.ANSWER_FILE, answer_vote_up, data_handler.ANSWERS_HEADER, answer_id)
-    return redirect(f'/{answer_vote_up["question_id"]}')
+    return redirect(f'/question/{answer_vote_up["question_id"]}')
 
 
 @app.route('/answer/<answer_id>/vote-down')
 def vote_down_answer(answer_id):
     answer_vote_down = data_handler.vote_down_answer(answer_id, data_handler.ANSWER_FILE)
     connection.write_csv(data_handler.ANSWER_FILE, answer_vote_down, data_handler.ANSWERS_HEADER, answer_id)
-    return redirect(f'/{answer_vote_down["question_id"]}')
+    return redirect(f'/question/{answer_vote_down["question_id"]}')
 
 
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
@@ -161,8 +159,6 @@ def speak():
                         else:
                             return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=message")
 
-
-
                 elif "question" in text:                                                    # IN Everywhere
                     return redirect(url_for("add_new_question"))                                # TO Home
 
@@ -179,16 +175,6 @@ def speak():
                         return redirect(request.environ['HTTP_REFERER'] + "/new-answer")
 
 
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
-                        # return redirect("")
                 print("Szeva")
                 return redirect('/')
             except:
