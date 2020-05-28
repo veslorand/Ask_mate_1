@@ -96,9 +96,12 @@ def vote_down_question(question_id, file_name):
     for item in question_dict.items():
         if item[0] == "vote_number":
             item = list(item)
-            item[1] = int(item[1]) - 1
-            question_dict['vote_number'] = item[1]
-            break
+            if item[1] != '0':
+                item[1] = int(item[1]) - 1
+                question_dict['vote_number'] = item[1]
+                break
+            else:
+                pass
     return question_dict
 
 
