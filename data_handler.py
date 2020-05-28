@@ -86,7 +86,7 @@ def vote_up_question(question_id, file_name):
         if item[0] == "vote_number":
             item = list(item)
             item[1] = int(item[1]) + 1
-
+            question_dict['vote_number'] = item[1]
             break
     return question_dict
 

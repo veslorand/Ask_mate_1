@@ -43,9 +43,10 @@ def write_csv_file(file_name, dict_list, fieldnames, id):
 def write_csv(file_name, to_change, fieldnames, question_id):
     questions = read_csv_file(file_name)
     for dict in questions:
-        if question_id in dict:
+        if question_id == dict['id']:
             questions.remove(dict)
             questions.append(to_change)
+            break
     with open(file_name, "w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
