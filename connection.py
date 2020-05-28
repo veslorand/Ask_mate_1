@@ -31,6 +31,17 @@ def write_csv_file(file_name, dict_list, fieldnames, id):
                 writer.writerow(dictionary)
 
 
+def answer_write_csv_file(file_name, dict_list, fieldnames, id):
+    with open(file_name, "w") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for dictionary in dict_list:
+            if dictionary['question_id'] == id:
+                continue
+            else:
+                writer.writerow(dictionary)
+
+
 # def edit_csv_file(file_name, question_id, all_question):
 #     modded_file = []
 #     with open(file_name) as file:
