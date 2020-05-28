@@ -1,12 +1,10 @@
-import os
-
+import speech_recognition as sr
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 import connection
 import data_handler
-import speech_recognition as sr
-
+import os
 
 app = Flask(__name__)
 UPLOAD_FOLDER = '/home/veslorandpc/Desktop/projects/Ask_mate_1/static'
@@ -17,8 +15,10 @@ LAST_ROUTE = None
 @app.route("/")
 @app.route("/list")
 def list_questions():
+    # print(request.environ['HTTP_REFERER'], request.environ['HTTP_HOST'] + "/")
     all_question = data_handler.get_all_question()
-    sorted_questions = connection.sort_the_questions(all_question, request.args.get('order_by'), request.args.get('order_direction'))
+    sorted_questions = connection.sort_the_questions(all_question, request.args.get('order_by'),
+                                                     request.args.get('order_direction'))
     return render_template("question_list.html", all_question=sorted_questions,
                            header=data_handler.QUESTIONS_HEADER)
 
@@ -105,6 +105,7 @@ def vote_down_answer(answer_id):
     connection.write_csv(data_handler.ANSWER_FILE, answer_vote_down, data_handler.ANSWERS_HEADER, answer_id)
     return redirect(f'/{answer_vote_down["question_id"]}')
 
+
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
 def edit_question(question_id):
     question_by_id = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
@@ -120,23 +121,81 @@ def edit_question(question_id):
 
 @app.route('/speak', methods=['POST', 'GET'])
 def speak():
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Speak my Lord!")
+            r.adjust_for_ambient_noise(source)
+            audio = r.listen(source, timeout=5.0, phrase_time_limit=20.0)
+            try:
+                text = r.recognize_google(audio)  # language="hu-HU"
+                print(f"You said: {text}")
 
-    r = sr.Recognizer()
+                if "home" in text:                                                              # IN Everywhere
+                    return redirect(url_for("list_questions"))                                  # TO Home
+                elif "sort" in text:
+                    print("sort")
+                    if "time" in text:
+                        if "descending" in text:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=desc&order_by=submission_time")
+                        else:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=submission_time")
+                    if "view" in text:
+                        if "descending" in text:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=desc&order_by=view_number")
+                        else:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=view_number")
+                    if "vote" in text:
+                        if "descending" in text:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=desc&order_by=vote_number")
+                        else:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=vote_number")
+                    if "title" in text:
+                        if "descending" in text:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=desc&order_by=title")
+                        else:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=title")
+                    if "message" in text:
+                        if "descending" in text:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=desc&order_by=message")
+                        else:
+                            return redirect("http://0.0.0.0:8000/list?order_direction=asc&order_by=message")
 
-    with sr.Microphone() as source:
-        request.files
-        print("Speak my Lord!")
-        r.adjust_for_ambient_noise(source)
-        audio = r.listen(source, timeout=5.0, phrase_time_limit=20.0)
-        try:
-            text = r.recognize_google(audio)  # language="hu-HU"
-            print(f"You said: {text}")
-            if "dog" in text:
-                if "title" in text:
-                    return render_template("add_new_answer.html")
-        except:
-            print("sorry")
-    return redirect('/')
+
+
+                elif "question" in text:                                                    # IN Everywhere
+                    return redirect(url_for("add_new_question"))                                # TO Home
+
+                elif request.environ['HTTP_REFERER'] in "http://0.0.0.0:8000/add_new_question": # IN Add new question
+                    if "back" in text:                                                          # TO Back to Home
+                        return redirect(url_for("list_questions"))
+
+                elif "new-answer" in request.environ['HTTP_REFERER']:                           # IN New answer
+                    if "back" in text:                                                          # TO Back question
+                        return redirect(request.environ['HTTP_REFERER'][:-11])
+
+                elif "question" in request.environ['HTTP_REFERER']:         # IN Question
+                    if "answer" in text:                                                           # TO New answer
+                        return redirect(request.environ['HTTP_REFERER'] + "/new-answer")
+
+
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                        # return redirect("")
+                print("Szeva")
+                return redirect('/')
+            except:
+                print("Sorry i didn't understand it my Lord!")
+                return redirect('/')
+    except:
+        return redirect('/')
 
 
 if __name__ == "__main__":
