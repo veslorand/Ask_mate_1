@@ -5,28 +5,20 @@ from werkzeug.utils import secure_filename
 
 import connection
 import data_handler
+import speech_recognition as sr
+
 
 app = Flask(__name__)
 UPLOAD_FOLDER = '/home/veslorandpc/Desktop/projects/Ask_mate_1'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-import speech_recognition as sr
 
 
 @app.route("/")
 @app.route("/list")
 def list_questions():
     all_question = data_handler.get_all_question()
-    if request.args:
-        if request.args.get('order_direction') == "desc":
-            sorted_questions_by_date = sorted(all_question, key=lambda i: i[request.args.get('order_by')])
-        else:
-            sorted_questions_by_date = sorted(all_question, key=lambda i: i[request.args.get('order_by')],
-                                              reverse=True)
-
-    else:
-        sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
-    return render_template("question_list.html", all_question=sorted_questions_by_date,
+    sorted_questions = connection.sort_the_questions(all_question, request.args.get('order_by'), request.args.get('order_direction'))
+    return render_template("question_list.html", all_question=sorted_questions,
                            header=data_handler.QUESTIONS_HEADER)
 
 
@@ -56,6 +48,7 @@ def add_new_question():
             return redirect(request.url)
         if file and data_handler.allowed_file(file.filename):
             filename = secure_filename(file.filename)
+
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return redirect("/question/" + new_question_data[0])
     return render_template("add_new_question.html", header=data_handler.QUESTIONS_HEADER)
@@ -89,7 +82,6 @@ def delete_answer(answer_id):
 def vote_up_question(question_id):
     question_vote_up = data_handler.vote_up_question(question_id, data_handler.QUESTION_FILE)
     connection.write_csv(data_handler.QUESTION_FILE, question_vote_up, data_handler.QUESTIONS_HEADER, question_id)
-
     return redirect('/')
 
 
@@ -99,11 +91,13 @@ def vote_down_question(question_id):
     connection.write_csv(data_handler.QUESTION_FILE, question_vote_down, data_handler.QUESTIONS_HEADER, question_id)
     return redirect('/')
 
+
 @app.route('/answer/<answer_id>/vote-up')
 def vote_up_answer(answer_id):
     answer_vote_up = data_handler.vote_up_answer(answer_id, data_handler.ANSWER_FILE)
     connection.write_csv(data_handler.ANSWER_FILE, answer_vote_up, data_handler.ANSWERS_HEADER, answer_id)
-    return render_template("answer_list.html", header=data_handler.ANSWERS_HEADER)
+    return redirect('/')
+
 
 @app.route('/answer/<answer_id>/vote-down')
 def vote_down_answer(answer_id):
@@ -111,12 +105,14 @@ def vote_down_answer(answer_id):
     connection.write_csv(data_handler.ANSWER_FILE, answer_down_up, data_handler.ANSWERS_HEADER, answer_id)
     return render_template("answer_list.html", header=data_handler.ANSWERS_HEADER)
 
+
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
 def edit_question(question_id):
     question_by_id = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
     if request.method == 'POST':
         edited_question_data = data_handler.edit_question(request.form.items(), question_id)
         all_question = data_handler.get_all_question()
+
         connection.write_csv_file(data_handler.QUESTION_FILE, all_question, data_handler.QUESTIONS_HEADER, question_id)
         connection.append_csv_file(data_handler.QUESTION_FILE, edited_question_data.values())
         return redirect("/question/" + question_id)
@@ -138,7 +134,6 @@ def speak():
                     return render_template("add_new_answer.html")
         except:
             print("sorry")
-
     return redirect('/')
 
 
