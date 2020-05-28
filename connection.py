@@ -31,13 +31,13 @@ def write_csv_file(file_name, dict_list, fieldnames, id):
                 writer.writerow(dictionary)
 
 
-def edit_csv_file(file_name, question_id, all_question):
-    modded_file = []
-    with open(file_name) as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            if row.keys() == question_id:
-                pass
+# def edit_csv_file(file_name, question_id, all_question):
+#     modded_file = []
+#     with open(file_name) as file:
+#         reader = csv.DictReader(file)
+#         for row in reader:
+#             if row.keys() == question_id:
+#                 pass
 
 
 def write_csv(file_name, to_change, fieldnames, question_id):

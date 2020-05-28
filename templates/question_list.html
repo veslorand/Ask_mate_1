@@ -10,21 +10,23 @@
                 {% for i in header %}
                     {% if not loop.first %}
                         <th>{{ i }}
-                            <form action="/list" method="get">
-                                <button type="submit" name="111{{ i }}" id="descending">▼</button>
-                            </form>
-                            <a href="/list" id="descending" name="{{ i }}" type="submit">▼</a>
-                            <a href="/list" id="ascending" name="{{ i }}" type="submit">▲</a></th>
+                            <a href="{{ url_for('list_questions', order_direction="desc", order_by=i) }}">▼</a>
+                            <a href="{{ url_for('list_questions', order_direction="asc", order_by=i) }}">▲</a>
                     {% endif %}
                 {% endfor %}
             </tr>
         </thead>
+
         <tbody>
             {% for question_dict in all_question %}
                 <tr>
                     {% for i in question_dict.items() %}
                         {% if loop.first %}
                             {{ continue }}
+                        {% elif loop.last %}
+                            <td id="try">
+                                {{ i[1] }}
+                            </td>
                         {% elif i[0] == "vote_number" %}
                             <td>
                                 <a href="/question/{{ question_dict['id'] }}">{{ question_dict['vote_number'] }}</a>
@@ -49,4 +51,7 @@
         </tbody>
     </table>
     <a href="/add_new_question">New question</a>
+    <form action="/speak" name="speak" method="post">
+        <button name="speak_button" type="submit" id="speak_button">MAGIC</button>
+    </form>
 {% endblock %}
