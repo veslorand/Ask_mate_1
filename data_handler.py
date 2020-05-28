@@ -125,7 +125,7 @@ def vote_down_answer(answer_id, file_name):
     for item in answer_dict.items():
         if item[0] == "vote_number":
             item = list(item)
-            if item[1] != '0'
+            if item[1] != '0':
                 item[1] = int(item[1]) - 1
                 answer_dict['vote_number'] = item[1]
                 break
