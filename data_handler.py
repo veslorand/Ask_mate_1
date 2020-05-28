@@ -95,10 +95,10 @@ def vote_down_question(question_id, file_name):
     question_dict = get_questions_by_id(question_id, file_name)
     for item in question_dict:
         if item[0] == "vote_number":
-            to_down = item[1]
-            to_down = int(to_down)
-            to_down -= 1
-            item[1] = to_down
+            item = list(item)
+            item[1] = int(item[1]) - 1
+            question_dict['vote_number'] = item[1]
+            break
     return question_dict
 
 
