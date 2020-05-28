@@ -25,7 +25,7 @@
                             {{ continue }}
                         {% elif i[0] == "image" %}
                             <td>
-                                <img src="/static/8481bcb45bde302f15e23e53483ebd3e.png" width="50" alt="joker">
+                                <img src="/static/{{ i[1] }}" width="50" alt="joker">
                             </td>
                         {% elif i[0] == "vote_number" %}
                             <td>
@@ -50,7 +50,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="/add_new_question">New question</a>
+    <a href="/add_new_question" >New question</a>
     <form action="/speak" name="speak" method="post">
         <button name="speak_button" type="submit" id="speak_button">MAGIC</button>
     </form>
