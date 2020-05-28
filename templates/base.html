@@ -11,10 +11,13 @@
             <tr>
                 <th><a id="nav_home" href="/">Home</a></th>
                 <th><a id="nav_new_question" href="/add_new_question">Add new question</a></th>
+
             </tr>
         </thead>
     </table>
-
+    <form action="/speak" name="speak" method="post">
+        <button name="speak_button" type="submit" id="magic_button" value="MAGIC">MAGIC BUTTON</button>
+    </form>
     {% block head %}{% endblock %}
 </head>
 <body>

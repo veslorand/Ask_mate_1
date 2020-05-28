@@ -11,6 +11,7 @@ import speech_recognition as sr
 app = Flask(__name__)
 UPLOAD_FOLDER = '/home/veslorandpc/Desktop/projects/Ask_mate_1/static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+LAST_ROUTE = None
 
 
 @app.route("/")
@@ -104,7 +105,6 @@ def vote_down_answer(answer_id):
     connection.write_csv(data_handler.ANSWER_FILE, answer_vote_down, data_handler.ANSWERS_HEADER, answer_id)
     return redirect(f'/{answer_vote_down["question_id"]}')
 
-
 @app.route('/question/<question_id>/edit', methods=['POST', 'GET'])
 def edit_question(question_id):
     question_by_id = data_handler.get_questions_by_id(question_id, data_handler.QUESTION_FILE)
@@ -120,12 +120,16 @@ def edit_question(question_id):
 
 @app.route('/speak', methods=['POST', 'GET'])
 def speak():
+
     r = sr.Recognizer()
+
     with sr.Microphone() as source:
-        print("Speak")
-        audio = r.listen(source, timeout=100.0, phrase_time_limit=100.0)
+        request.files
+        print("Speak my Lord!")
+        r.adjust_for_ambient_noise(source)
+        audio = r.listen(source, timeout=5.0, phrase_time_limit=20.0)
         try:
-            text = r.recognize_google(audio)
+            text = r.recognize_google(audio)  # language="hu-HU"
             print(f"You said: {text}")
             if "dog" in text:
                 if "title" in text:
