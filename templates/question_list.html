@@ -23,14 +23,14 @@
                     {% for i in question_dict.items() %}
                         {% if loop.first %}
                             {{ continue }}
-                        {% elif loop.last %}
-                            <td id="try">
-                                {{ i[1] }}
+                        {% elif i[0] == "image" %}
+                            <td>
+                                <img src="/static/8481bcb45bde302f15e23e53483ebd3e.png" width="50" alt="joker">
                             </td>
                         {% elif i[0] == "vote_number" %}
                             <td>
                                 <a href="/question/{{ question_dict['id'] }}">{{ question_dict['vote_number'] }}</a>
-                                <a href="/question/{{ question_dict['id'] }}/vote-up">(▲)</a>
+                                <a href="/question/{{ question_dict['id'] }}/vote-up" id="">(▲)</a>
                                 <a href="/question/{{ question_dict['id'] }}/vote-down">(▼)</a>
                             </td>
                         {% elif i[0] != "title" %}

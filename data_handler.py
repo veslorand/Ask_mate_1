@@ -110,6 +110,7 @@ def vote_down_question(question_id, file_name):
                 pass
     return question_dict
 
+
 def vote_up_answer(answer_id, file_name):
     answer_dict = get_answer_by_id(answer_id, file_name)
     for item in answer_dict.items():
@@ -119,6 +120,7 @@ def vote_up_answer(answer_id, file_name):
             answer_dict['vote_number'] = item[1]
             break
     return answer_dict
+
 
 def vote_down_answer(answer_id, file_name):
     answer_dict = get_answer_by_id(answer_id, file_name)
