@@ -10,20 +10,22 @@ app = Flask(__name__)
 UPLOAD_FOLDER = '/home/veslorandpc/Desktop/projects/Ask_mate_1'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+import speech_recognition as sr
+
 
 @app.route("/")
 @app.route("/list")
 def list_questions():
     all_question = data_handler.get_all_question()
-    try:
-        order = request.values
-        print(request.values.getlist('name'))
-        print(order['name'])
-        sorted_questions_by_date = sorted(all_question, key=lambda i: i[order])
-    except:
-        print("Ez")
-        sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
+    if request.args:
+        if request.args.get('order_direction') == "desc":
+            sorted_questions_by_date = sorted(all_question, key=lambda i: i[request.args.get('order_by')])
+        else:
+            sorted_questions_by_date = sorted(all_question, key=lambda i: i[request.args.get('order_by')],
+                                              reverse=True)
 
+    else:
+        sorted_questions_by_date = sorted(all_question, key=lambda i: i['submission_time'])
     return render_template("question_list.html", all_question=sorted_questions_by_date,
                            header=data_handler.QUESTIONS_HEADER)
 
@@ -45,7 +47,7 @@ def add_new_question():
     if request.method == 'POST':
         new_question_data = data_handler.create_question_form(request.form.values())
         connection.append_csv_file(data_handler.QUESTION_FILE, new_question_data)
-        if 'file' not in request.files:
+        if 'file' not in request.files:  # todo IMAGE!
             print('No file part')
             return redirect(request.url)
         file = request.files['file']
@@ -109,6 +111,24 @@ def edit_question(question_id):
         return redirect("/question/" + question_id)
     return render_template("edit_question.html", question_id=question_id, message=question_by_id['message'],
                            title=question_by_id['title'])
+
+
+@app.route('/speak', methods=['POST', 'GET'])
+def speak():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Speak")
+        audio = r.listen(source, timeout=100.0, phrase_time_limit=100.0)
+        try:
+            text = r.recognize_google(audio)
+            print(f"You said: {text}")
+            if "dog" in text:
+                if "title" in text:
+                    return render_template("add_new_answer.html")
+        except:
+            print("sorry")
+
+    return redirect('/')
 
 
 if __name__ == "__main__":
