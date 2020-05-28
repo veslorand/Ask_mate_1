@@ -4,11 +4,11 @@
     <title>Answer list</title>
 {% endblock %}
 {% block body %}
-    <table width="1000" border="1">
+    <table border="1" width="1000" class="answer_table">
         <thead>
-            <tr>
-                <th>{{ question['title'] }}</th>
-            </tr>
+        <tr>
+            <th>{{ question['title'] }}</th>
+        </tr>
         </thead>
         <tbody>
         <tr>
@@ -17,35 +17,34 @@
         </tbody>
     </table>
 
-    <table border="1" width="1000">
+    <table border="1" width="1000" class="answer_tablee">
         <thead>
-            <tr>
-                {% for i in header %}
-                    <th>{{ i }}</th>
-                {% endfor %}
-            </tr>
+        <tr>
+            {% for i in header %}
+                <th>{{ i }}</th>
+            {% endfor %}
+        </tr>
         </thead>
         <tbody>
-            {% for answer_dict in all_answer %}
-                <tr>
-                    {% if answer_dict['question_id'] == question['id'] %}
-                        {% for answer_key in answer_dict.items() %}
-                                <td>
-                                    {{ answer_key[1] }}
-                                    {% if answer_key[0] == 'message' %}
-                                        <a href="/answer/{{ answer_dict['id'] }}/delete">(del)</a>
-                                    {% elif answer_key[0] == 'vote_number' %}
-                                        <a href="/answer/{{ answer_dict['id'] }}/vote-up">(▲)</a>
-                                        <a href="/answer/{{ answer_dict['id'] }}/vote-down">(▼)</a>
+        {% for answer_dict in all_answer %}
+            <tr>
+                {% if answer_dict['question_id'] == question['id'] %}
+                    {% for answer_key in answer_dict.items() %}
+                        <td>
+                            {{ answer_key[1] }}
+                            {% if answer_key[0] == 'message' %}
+                                <a href="/answer/{{ answer_dict['id'] }}/delete">(del)</a>
+                            {% elif answer_key[0] == 'vote_number' %}
+                                <a href="/answer/{{ answer_dict['id'] }}/vote-up">(▲)</a>
+                                <a href="/answer/{{ answer_dict['id'] }}/vote-down">(▼)</a>
 
-                                    {% endif %}
-                                </td>
+                            {% endif %}
+                        </td>
 
-                        {% endfor %}
-{# todo                       <td>There is no answer for your question yet! :(</td>#}
-                    {% endif %}
-                </tr>
-            {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
     <a href="/question/{{ question['id'] }}/new-answer">New answer</a>
