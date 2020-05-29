@@ -21,7 +21,13 @@
         <thead>
         <tr>
             {% for i in header %}
-                <th>{{ i }}</th>
+                {% if i == "id" %}
+                    {{ continue }}
+                {% elif i == "question_id" %}
+                    {{ continue }}
+                {% else %}
+                    <th>{{ i }}</th>
+                {% endif %}
             {% endfor %}
         </tr>
         </thead>
@@ -30,8 +36,14 @@
             <tr>
                 {% if answer_dict['question_id'] == question['id'] %}
                     {% for answer_key in answer_dict.items() %}
+                        {% if answer_key[0] == 'id' %}
+                            {{ continue }}
+                            {% elif answer_key[0] == 'question_id' %}
+                            {{ continue }}
+                            {% else %}
                         <td>
                             {{ answer_key[1] }}
+                            {% endif %}
                             {% if answer_key[0] == 'message' %}
                                 <a href="/answer/{{ answer_dict['id'] }}/delete">(del)</a>
                             {% elif answer_key[0] == 'vote_number' %}

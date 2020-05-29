@@ -29,7 +29,7 @@
                         </td>
                     {% elif i[0] == "vote_number" %}
                         <td>
-                            <a href="/question/{{ question_dict['id'] }}">{{ question_dict['vote_number'] }}</a>
+                            {{ question_dict['vote_number'] }}
                             <a href="/question/{{ question_dict['id'] }}/vote-up" id="">(▲)</a>
                             <a href="/question/{{ question_dict['id'] }}/vote-down">(▼)</a>
                         </td>
